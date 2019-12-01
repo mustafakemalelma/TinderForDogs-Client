@@ -27,3 +27,24 @@ export const REGISTER_DOG = gql`
     )
   }
 `;
+
+export const INVALIDATE_TOKEN = gql`
+  mutation InvalidateTokens {
+    invalidateTokens
+  }
+`;
+
+export const LIKE_DOG = gql`
+  mutation LikeDog($likedId: ID!) {
+    like(likedId: $likedId) {
+      successful
+      isAMatch
+    }
+  }
+`;
+
+export const DISLIKE_DOG = gql`
+  mutation DislikeDog($dislikedId: ID!) {
+    dislike(dislikedId: $dislikedId)
+  }
+`;

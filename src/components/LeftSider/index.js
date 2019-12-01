@@ -1,29 +1,54 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useQuery, useMutation } from "@apollo/react-hooks";
+import { Col, Row, Icon, message } from "antd";
+import { useHistory } from "react-router-dom";
+
+import { GET_ME } from "../../graphql/queries";
+import { INVALIDATE_TOKEN } from "../../graphql/mutations";
+import { getStaticImage } from "../../utils";
 
 import { Sider, Name, SiderActionButton, InfoLabel, InfoLabelDivider, InfoValue, ProfileImage } from "./styles";
-import { Col, Row, Icon } from "antd";
 
 function LeftSider() {
+  const history = useHistory();
+  const { error, data } = useQuery(GET_ME);
+
+  const [trySignOut, { data: signoutData, error: signoutError, loading: signoutLoading, client }] = useMutation(
+    INVALIDATE_TOKEN
+  );
+
+  useEffect(() => {
+    if (signoutError) message.error(signoutError.message);
+    else if (signoutData && signoutData.invalidateTokens) {
+      client.writeData({ data: { auth: { __typename: "Auth", loggedIn: false } } });
+      history.push("/login");
+    }
+  }, [client, history, signoutError, signoutData]);
+
+  useEffect(() => {
+    if (error) message.error(error.message);
+  }, [error]);
+
   return (
     <Sider width={280}>
-      <ProfileImage size={142} src="https://picsum.photos/142/142" alt="profile-pic" />
+      <ProfileImage size={142} src={data ? getStaticImage(data.me.profilePic) : ""} alt="profile-pic" />
 
       <Name>Mapple</Name>
       <SiderActionButton icon="edit" type="dashed" ghost block>
         Edit Profile
       </SiderActionButton>
-      <SiderActionButton icon="logout" type="dashed" ghost block>
+      <SiderActionButton icon="logout" type="dashed" ghost block loading={signoutLoading} onClick={trySignOut}>
         Sign out
       </SiderActionButton>
 
       <InfoLabelDivider />
       <InfoLabel>Self Summary</InfoLabel>
-      <InfoValue>hav hav ...</InfoValue>
+      <InfoValue>{data ? data.me.selfSummary : ""}</InfoValue>
 
       <InfoLabel>Breed</InfoLabel>
       <Row type="flex" justify="space-between">
         <Col>
-          <InfoValue>Golden</InfoValue>
+          <InfoValue>{data ? data.me.breed : ""}</InfoValue>
         </Col>
 
         <Col>
@@ -32,16 +57,16 @@ function LeftSider() {
       </Row>
 
       <InfoLabel>Age</InfoLabel>
-      <InfoValue>8 years old</InfoValue>
+      <InfoValue>{data ? data.me.age : ""}</InfoValue>
 
       <InfoLabel>Size</InfoLabel>
-      <InfoValue>110 cm</InfoValue>
+      <InfoValue>{data ? data.me.size : ""}</InfoValue>
 
       <InfoLabel>Weight</InfoLabel>
-      <InfoValue>20 kg</InfoValue>
+      <InfoValue>{data ? data.me.weight : ""}</InfoValue>
 
       <InfoLabel>Address</InfoLabel>
-      <InfoValue>Etiler / Beşiktaş</InfoValue>
+      <InfoValue>{data ? data.me.address : ""}</InfoValue>
     </Sider>
   );
 }

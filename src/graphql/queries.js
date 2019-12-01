@@ -8,6 +8,32 @@ export const GET_LOGGED_IN = gql`
   }
 `;
 
+export const GET_ME = gql`
+  {
+    me {
+      profilePic
+      name
+      selfSummary
+      breed
+      age
+      size
+      weight
+      address
+    }
+  }
+`;
+
+export const GET_CANDIDATES = gql`
+  {
+    candidateDogs {
+      name
+      breed
+      age
+      selfSummary
+    }
+  }
+`;
+
 export const LOGIN_QUERY = gql`
   query($email: String!, $password: String!) {
     loginDog(email: $email, password: $password) {
