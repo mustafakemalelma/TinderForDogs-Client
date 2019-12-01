@@ -1,8 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from "react";
+import ReactDOM from "react-dom";
 
-import App from './App';
+import { ApolloClient } from "apollo-client";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { createUploadLink } from "apollo-upload-client";
 
-import './index.css';
+import { ApolloProvider } from "@apollo/react-hooks";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import App from "./App";
+
+import "./index.css";
+import "antd/dist/antd.less";
+
+const cache = new InMemoryCache();
+const client = new ApolloClient({
+  cache,
+  link: createUploadLink({ uri: "http://localhost:5000/graphql", credentials: "include" }),
+  resolvers: {}
+});
+
+cache.writeData({
+  data: {
+    auth: {
+      __typename: "Auth",
+      loggedIn: false
+    }
+  }
+});
+
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
+  document.getElementById("root")
+);
