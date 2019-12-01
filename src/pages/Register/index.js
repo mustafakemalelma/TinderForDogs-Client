@@ -202,6 +202,8 @@ function Register({ form }) {
             >
               Go
             </LoginButton>
+
+            <a href="/login">Go to Login</a>
           </Form.Item>
         </FormContainer>
       </RightCol>

@@ -27,7 +27,9 @@ function Login({ form }) {
   const {
     data: { auth }
   } = useQuery(GET_LOGGED_IN);
-  if (auth.loggedIn) history.push("/homepage");
+  if (auth.loggedIn) {
+    history.push("/homepage");
+  }
 
   const [tryLogin, { loading, error, data, client }] = useLazyQuery(LOGIN_QUERY);
 
@@ -84,6 +86,8 @@ function Login({ form }) {
             >
               Go
             </LoginButton>
+
+            <a href="/register">Register</a>
           </Form.Item>
         </FormContainer>
       </RightCol>

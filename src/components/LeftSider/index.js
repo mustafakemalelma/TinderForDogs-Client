@@ -11,7 +11,7 @@ import { Sider, Name, SiderActionButton, InfoLabel, InfoLabelDivider, InfoValue,
 
 function LeftSider() {
   const history = useHistory();
-  const { error, data } = useQuery(GET_ME);
+  const { error, data } = useQuery(GET_ME, { fetchPolicy: "network-only" });
 
   const [trySignOut, { data: signoutData, error: signoutError, loading: signoutLoading, client }] = useMutation(
     INVALIDATE_TOKEN
