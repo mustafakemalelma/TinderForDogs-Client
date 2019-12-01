@@ -10,20 +10,27 @@ import { getStaticImage } from "../../utils";
 import { Sider, Name, SiderActionButton, InfoLabel, InfoLabelDivider, InfoValue, ProfileImage } from "./styles";
 
 function LeftSider() {
+  //Getting the browser history
   const history = useHistory();
+
+  //Make a get me request
   const { error, data } = useQuery(GET_ME, { fetchPolicy: "network-only" });
 
+  //Gets the function and objects for making a logout request later.
   const [trySignOut, { data: signoutData, error: signoutError, loading: signoutLoading, client }] = useMutation(
     INVALIDATE_TOKEN
   );
 
+  //Logout response handling
   useEffect(() => {
     if (signoutError) message.error(signoutError.message);
     else if (signoutData && signoutData.invalidateTokens) {
+      //if successfully loged out then clear the local cache.
       client.clearStore().then(() => history.push("/login"));
     }
   }, [client, history, signoutError, signoutData]);
 
+  //If there is an error when making a get me request, show it.
   useEffect(() => {
     if (error) message.error(error.message);
   }, [error]);

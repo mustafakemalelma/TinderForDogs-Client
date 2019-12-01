@@ -20,15 +20,22 @@ import {
 } from "./styles";
 
 function Homepage() {
+  //Get the is user logged in info from the local cache.
   const {
     data: { auth }
   } = useQuery(GET_LOGGED_IN);
+
+  //Make a get me request
   const { data: meData } = useQuery(GET_ME);
+  //Make a get candidates request
   const { data: candidatesData, loading: candidatesLoading } = useQuery(GET_CANDIDATES);
 
+  //Get the functions and objects for making a like request later.
   const [tryLike, { data: likeData, loading: likeLoading, error: likeError }] = useMutation(LIKE_DOG, {
     refetchQueries: ["candidateDogs"]
   });
+
+  //Get the functions and objects for making a dislike request later.
   const [tryDislike, { data: dislikeData, loading: dislikeLoading, error: dislikeError }] = useMutation(DISLIKE_DOG, {
     refetchQueries: ["candidateDogs"]
   });
@@ -39,12 +46,16 @@ function Homepage() {
     if (candidatesData && candidatesData.candidateDogs) setCandidateDogs(candidatesData.candidateDogs);
   }, [candidatesData]);
 
+  //This functions make a like dog request to api.
   const likeDog = useCallback(() => {
     const dog = candidateDogs[0];
     setLastLikedDog(dog);
     tryLike({ variables: { likedId: dog.id } });
   }, [candidateDogs, tryLike]);
 
+  //This is checking if liking is successfull or not.
+  //It also check if a match happened, if there is a match
+  // then it shows a modal
   useEffect(() => {
     if (likeData && likeData.like) {
       const { isAMatch } = likeData.like;
@@ -69,11 +80,13 @@ function Homepage() {
     if (likeError) message.error("Something went wrong!");
   }, [likeData, likeError, meData, lastLikedDog]);
 
+  //This function makes a dislike request to api.
   const dislikeDog = useCallback(() => {
     const dog = candidateDogs[0];
     tryDislike({ variables: { dislikedId: dog.id } });
   }, [candidateDogs, tryDislike]);
 
+  //This functions check if there is any error happened when disliking.
   useEffect(() => {
     if (dislikeError) message.error("Something went wrong!");
   }, [dislikeData, dislikeError]);

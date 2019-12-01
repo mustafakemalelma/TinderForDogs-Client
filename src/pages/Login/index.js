@@ -22,8 +22,10 @@ import {
 function Login({ form }) {
   const { getFieldDecorator, validateFields, getFieldsError } = form;
 
+  //Get the browser history
   const history = useHistory();
 
+  //Is user logged in, get it from local cache.
   const {
     data: { auth }
   } = useQuery(GET_LOGGED_IN);
@@ -31,8 +33,10 @@ function Login({ form }) {
     history.push("/homepage");
   }
 
+  //Gets the functions and objects for making login request later.
   const [tryLogin, { loading, error, data, client }] = useLazyQuery(LOGIN_QUERY);
 
+  //Make a login request to api.
   const handleLogin = useCallback(
     e => {
       e.preventDefault();
@@ -45,9 +49,11 @@ function Login({ form }) {
     [validateFields, tryLogin]
   );
 
+  //Login response handling
   useEffect(() => {
     if (error) message.error(error.message);
     else if (data && data.loginDog) {
+      //Tell local cache that  user logged in.
       client.writeData({ data: { auth: { __typename: "Auth", loggedIn: true } } });
       history.push("/homepage");
     }

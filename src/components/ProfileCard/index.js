@@ -5,6 +5,7 @@ import { getStaticImage } from "../../utils";
 
 import { Card, Name, BreedAndAge, BreedInfoIcon, CardLabel, CardLabelDivider, CardValue, CoverImage } from "./styles";
 
+//A Component for cards that shows the info about candidate dogs.
 function ProfileCard({ dog }) {
   return (
     <Card style={{ width: 320 }} cover={<CoverImage alt="example" src={getStaticImage(dog.profilePic)} />}>

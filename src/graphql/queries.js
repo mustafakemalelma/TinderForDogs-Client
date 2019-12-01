@@ -1,5 +1,9 @@
 import gql from "graphql-tag";
 
+/**
+ * GRAPHQL QUERIES REQUEST HOLDERS
+ */
+
 export const GET_LOGGED_IN = gql`
   {
     auth @client {

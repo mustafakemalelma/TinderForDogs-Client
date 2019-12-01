@@ -1,3 +1,4 @@
+//This function is for making a request to the THE DOG API
 const xmlFetch = config => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -16,6 +17,7 @@ const xmlFetch = config => {
   });
 };
 
+//Makes a get breeds request to THE DOG API
 export const fetchBreeds = async () => {
   const config = {
     method: "GET",

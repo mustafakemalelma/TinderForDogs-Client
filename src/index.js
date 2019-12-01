@@ -11,13 +11,16 @@ import { API_URL } from "./utils";
 import "./index.css";
 import "antd/dist/antd.less";
 
+//Creates a local cache
 const cache = new InMemoryCache();
+//Creates an Apollo Client which will handle the graphql requests and responses.
 const client = new ApolloClient({
   cache,
   link: createUploadLink({ uri: `${API_URL}/graphql`, credentials: "include" }),
   resolvers: {}
 });
 
+//Initial LOCAL CACHE data
 const INITIAL_DATA = {
   auth: {
     __typename: "Auth",

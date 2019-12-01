@@ -2,10 +2,10 @@ import React from "react";
 import { Layout } from "antd";
 
 import LeftSider from "../LeftSider";
-// import RightSider from "../RightSider";
 
 import { OuterLayout, ContentArea } from "./styles";
 
+//This component creates the base layout for the homepage
 function BaseLayout({ children }) {
   return (
     <OuterLayout>

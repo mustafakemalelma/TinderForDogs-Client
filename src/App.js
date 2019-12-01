@@ -12,8 +12,10 @@ import { GET_ME } from "./graphql/queries";
 import { AutoLoginContainer } from "./styles/common";
 
 function App() {
+  //Make a get me request. This is for auto login. Tests if the tokens are still valid or not
   const { loading, data, client } = useQuery(GET_ME);
 
+  //If tokens are still valid and there is a response then tell local cache that user logged in
   useEffect(() => {
     if (data) client.writeData({ data: { auth: { __typename: "Auth", loggedIn: true } } });
   }, [data, client]);

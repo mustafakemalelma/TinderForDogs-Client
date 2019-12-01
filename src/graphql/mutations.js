@@ -1,5 +1,9 @@
 import gql from "graphql-tag";
 
+/**
+ * GRAPHQL MUTATIONS HOLDERS
+ */
+
 export const REGISTER_DOG = gql`
   mutation RegisterDog(
     $email: String!

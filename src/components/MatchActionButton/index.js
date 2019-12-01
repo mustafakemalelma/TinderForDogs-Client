@@ -2,6 +2,7 @@ import React from "react";
 
 import { Container, ActionButtonIcon, ActionButton, ActionButtonTitle } from "./styles";
 
+//A component for Like and Dislike Buttons in Homepage
 function MatchActionButton({ background, icon, title, onClick }) {
   return (
     <Container>

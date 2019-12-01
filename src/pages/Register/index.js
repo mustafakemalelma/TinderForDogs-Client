@@ -29,17 +29,22 @@ const { Option } = Select;
 function Register({ form }) {
   const { getFieldDecorator, getFieldsError, validateFields, getFieldsValue } = form;
 
+  //Gets the browser history.
   const history = useHistory();
 
   const [breeds, setBreeds] = useState([]);
 
+  //Gets the function and objects for making a register request to api later.
   const [tryRegister, { data: registerDogData, error: registerDogError, loading: registerDogLoading }] = useMutation(
     REGISTER_DOG
   );
+
+  //Gets the function and objects for making a login request to api later.
   const [tryLogin, { data: loginDogData, loading: loginDogLoading, error: loginDogError, client }] = useLazyQuery(
     LOGIN_QUERY
   );
 
+  //Gets the breeds from the THE DOG API and set the states for it.
   useEffect(() => {
     const getBreeds = async () => {
       try {
@@ -53,6 +58,7 @@ function Register({ form }) {
     getBreeds();
   }, []);
 
+  //Make a register request to api.
   const handleRegister = useCallback(
     e => {
       e.preventDefault();
@@ -72,6 +78,8 @@ function Register({ form }) {
     [validateFields, tryRegister]
   );
 
+  //Handling register request.
+  //If success, then make a login request
   useEffect(() => {
     if (registerDogError) message.error(registerDogError.message);
     else if (registerDogData) {
@@ -80,14 +88,17 @@ function Register({ form }) {
     }
   }, [registerDogData, registerDogError, getFieldsValue, tryLogin]);
 
+  //Login request handling
   useEffect(() => {
     if (loginDogError) message.error(loginDogError.message);
     else if (loginDogData) {
+      //Tell local cache that user logged in.
       client.writeData({ data: { auth: { __typename: "Auth", loggedIn: true } } });
       history.push("/homepage");
     }
   }, [loginDogData, loginDogError, history, client]);
 
+  //Get the file when user uploads one.
   const normFile = useCallback(e => {
     if (Array.isArray(e)) {
       return e;
