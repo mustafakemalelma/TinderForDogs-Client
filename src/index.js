@@ -18,14 +18,17 @@ const client = new ApolloClient({
   resolvers: {}
 });
 
-cache.writeData({
-  data: {
-    auth: {
-      __typename: "Auth",
-      loggedIn: false
-    }
+const INITIAL_DATA = {
+  auth: {
+    __typename: "Auth",
+    loggedIn: false
   }
+};
+
+cache.writeData({
+  data: INITIAL_DATA
 });
+client.onClearStore(() => cache.writeData({ data: INITIAL_DATA }));
 
 ReactDOM.render(
   <ApolloProvider client={client}>

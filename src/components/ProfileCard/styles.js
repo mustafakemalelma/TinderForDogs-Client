@@ -6,6 +6,10 @@ export const Card = styled(CardANTD)`
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25) !important;
 `;
 
+export const CoverImage = styled.img`
+  height: 320px;
+`;
+
 export const Name = styled.p`
   font-size: 20px;
   font-weight: 800;

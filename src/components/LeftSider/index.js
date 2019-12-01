@@ -20,8 +20,7 @@ function LeftSider() {
   useEffect(() => {
     if (signoutError) message.error(signoutError.message);
     else if (signoutData && signoutData.invalidateTokens) {
-      client.writeData({ data: { auth: { __typename: "Auth", loggedIn: false } } });
-      history.push("/login");
+      client.clearStore().then(() => history.push("/login"));
     }
   }, [client, history, signoutError, signoutData]);
 
@@ -33,7 +32,7 @@ function LeftSider() {
     <Sider width={280}>
       <ProfileImage size={142} src={data ? getStaticImage(data.me.profilePic) : ""} alt="profile-pic" />
 
-      <Name>Mapple</Name>
+      <Name>{data ? data.me.name : ""}</Name>
       <SiderActionButton icon="edit" type="dashed" ghost block>
         Edit Profile
       </SiderActionButton>

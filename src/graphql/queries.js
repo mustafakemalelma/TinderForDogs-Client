@@ -24,9 +24,11 @@ export const GET_ME = gql`
 `;
 
 export const GET_CANDIDATES = gql`
-  {
+  query candidateDogs {
     candidateDogs {
+      id
       name
+      profilePic
       breed
       age
       selfSummary

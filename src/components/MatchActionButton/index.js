@@ -2,10 +2,10 @@ import React from "react";
 
 import { Container, ActionButtonIcon, ActionButton, ActionButtonTitle } from "./styles";
 
-function MatchActionButton({ background, icon, title }) {
+function MatchActionButton({ background, icon, title, onClick }) {
   return (
     <Container>
-      <ActionButton background={background}>
+      <ActionButton background={background} onClick={onClick}>
         <ActionButtonIcon type={icon} theme="filled" />
       </ActionButton>
 
